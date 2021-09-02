@@ -58,16 +58,16 @@ class LoadingState extends State<Loading>{
   }
   Widget build(BuildContext context){
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(''),
-      //   centerTitle: true,
-      //   leading: IconButton(
-      //     onPressed: (){
-      //       Navigator.pop(context);
-      //     },
-      //       icon: Icon(Icons.arrow_back)
-      //   ),
-      // ),
+      appBar: AppBar(
+        title: Text(''),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+            icon: Icon(Icons.arrow_back)
+        ),
+      ),
         backgroundColor: Theme.of(context).backgroundColor,
         body:Center(
           child: Text(displayText),

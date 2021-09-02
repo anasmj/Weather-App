@@ -28,6 +28,7 @@ class WeatherDetails {
         'http://api.openweathermap.org/data/2.5/weather?q=$givenLocation&appid=$_apiKey'));
     map = jsonDecode(response.body);
 
+
     apiGivenLocation = map['name'];
     lat = map['coord']['lat'].toString();
     lon = map['coord']['lon'].toString();

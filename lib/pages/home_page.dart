@@ -17,11 +17,11 @@ class HomePageState extends State<HomePage> {
   double minTopPadding = 38;
   double titleFontSize = 18.0;
   double infoFontSize = 30.0;
-
   String _location = '-';
   String _weatherMain = '-';
   String _temp = '-';
   String _windSpeed = '-';
+
   String _cloudStatus = '-';
   String _humidity = '-';
   String _pressure = '-';
@@ -29,9 +29,8 @@ class HomePageState extends State<HomePage> {
 
   Widget build(BuildContext context) {
 
+
     data = data.isEmpty ? ModalRoute.of(context)!.settings.arguments as Map : data;
-
-
     _location    = data['apiGivenLocation'];
     _weatherMain = data['weatherMain'] == 'Clouds' ? 'Cloudy' : 'Cloudy';
     /// convert m/s to km/h
@@ -64,19 +63,19 @@ class HomePageState extends State<HomePage> {
                     onPressed: () async {
                       final String newLocation = (await showSearch(
                           context: context, delegate: SearchBar()))!;
-
-                      /// if user picks a location that does not exist in the list
-                      //tryLocationOutOfList(newLocation);
-
-                      /// if user presses back button without choosing any location
                       if (newLocation.isNotEmpty) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                Loading(location: newLocation),
-                          ),
-                        );
+                        if (SearchBar.existInSearchList) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  Loading(location: newLocation),
+                            ),
+                          );
+                        } else {
+                          /// try unknown location
+                          tryUnknownLocation(newLocation);
+                        }
                       }
                     },
                     icon: Icon(
@@ -120,12 +119,16 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  void tryLocationOutOfList(String newLocation){
-    String s = newLocation;
-    s = s.toLowerCase();
+  void tryUnknownLocation(String newLocation) {
+    String s = newLocation.toLowerCase();
     s = s[0].toUpperCase()+s.substring(1);
-    print(s);
-
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            Loading(location: s),
+      ),
+    );
   }
 
   Widget weatherWidget(

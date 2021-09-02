@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class SearchBar extends SearchDelegate<String> {
+  static bool existInSearchList = false;
 
   final locations = [
     'Bangladesh',
@@ -28,11 +29,13 @@ class SearchBar extends SearchDelegate<String> {
   ];
   @override
   List<Widget> buildActions(BuildContext context) {
-    // TODO: implement buildActions
     return [
       IconButton(
         onPressed: (){
-          close(context, query);
+          if(query.isNotEmpty){
+            if(locations.contains(query)) existInSearchList = true;
+            close(context, query);
+          }
         },
         icon: Icon(Icons.search),
       )
@@ -49,7 +52,13 @@ class SearchBar extends SearchDelegate<String> {
 
   @override  /// search button is pressed in the device keyboard
   Widget buildResults(BuildContext context) {
-    close(context, query);
+    if(query.isNotEmpty){
+      close(context, query);
+    }
+    // if(locations.contains(query)){
+    //   existInSearchList = true;
+    // }
+    //todo fix bug: pressing search button with empty search bar causes crush
     return HomePage();
   }
 
@@ -74,6 +83,7 @@ class SearchBar extends SearchDelegate<String> {
 
         return ListTile(
           onTap: () {
+            existInSearchList = true;
             query = suggestion;
             close(context, suggestion);
           },
