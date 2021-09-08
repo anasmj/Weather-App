@@ -33,8 +33,13 @@ class SearchBar extends SearchDelegate<String> {
       IconButton(
         onPressed: (){
           if(query.isNotEmpty){
-            if(locations.contains(query)) existInSearchList = true;
-            close(context, query);
+            if(locations.contains(query)){
+              existInSearchList = true;
+            }
+            else{
+              existInSearchList = false;
+              close(context, query, );
+            }
           }
         },
         icon: Icon(Icons.search),
@@ -83,7 +88,7 @@ class SearchBar extends SearchDelegate<String> {
 
         return ListTile(
           onTap: () {
-            existInSearchList = true;
+            //existInSearchList = true;
             query = suggestion;
             close(context, suggestion);
           },

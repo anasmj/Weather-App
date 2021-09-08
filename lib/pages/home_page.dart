@@ -26,7 +26,6 @@ class HomePageState extends State<HomePage> {
   String _humidity = '-';
   String _pressure = '-';
 
-
   Widget build(BuildContext context) {
 
 
@@ -63,10 +62,9 @@ class HomePageState extends State<HomePage> {
                     onPressed: () async {
                       final String newLocation = (await showSearch(
                           context: context, delegate: SearchBar()))!;
-                      print(newLocation);
+                      //print('$newLocation, ${SearchBar.existInSearchList}');
                       if (newLocation.isNotEmpty) {
                         if (SearchBar.existInSearchList) {
-
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -75,9 +73,7 @@ class HomePageState extends State<HomePage> {
                             ),
                           );
                         } else {
-                          // todo searching for location isn't working
-
-                          //tryUnknownLocation(newLocation);
+                          tryUnknownLocation(newLocation);
                         }
                       }
                     },
@@ -125,7 +121,8 @@ class HomePageState extends State<HomePage> {
   void tryUnknownLocation(String newLocation) {
     String s = newLocation.toLowerCase();
     s = s[0].toUpperCase()+s.substring(1);
-    Navigator.push(
+    print(s);
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) =>
