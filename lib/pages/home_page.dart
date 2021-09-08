@@ -63,9 +63,11 @@ class HomePageState extends State<HomePage> {
                     onPressed: () async {
                       final String newLocation = (await showSearch(
                           context: context, delegate: SearchBar()))!;
+                      print(newLocation);
                       if (newLocation.isNotEmpty) {
                         if (SearchBar.existInSearchList) {
-                          Navigator.push(
+
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
@@ -73,8 +75,9 @@ class HomePageState extends State<HomePage> {
                             ),
                           );
                         } else {
-                          /// try unknown location
-                          tryUnknownLocation(newLocation);
+                          // todo searching for location isn't working
+
+                          //tryUnknownLocation(newLocation);
                         }
                       }
                     },
