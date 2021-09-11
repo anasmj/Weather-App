@@ -88,7 +88,7 @@ class SearchBar extends SearchDelegate<String> {
 
         return ListTile(
           onTap: () {
-            //existInSearchList = true;
+            existInSearchList = true;
             query = suggestion;
             close(context, suggestion);
           },

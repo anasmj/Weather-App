@@ -45,15 +45,25 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       body: Container(
         /// full container
-        color: Theme.of(context).backgroundColor,
+        color: Colors.grey,
+        //color: Theme.of(context).backgroundColor,
         child: ListView(
           children: [
             SizedBox(
               height: 3.0,
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+                Text(
+                  'Weather Details',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 82),
                 Text(
                   _location,
                   style: TextStyle(fontSize: 16),
@@ -62,19 +72,33 @@ class HomePageState extends State<HomePage> {
                     onPressed: () async {
                       final String newLocation = (await showSearch(
                           context: context, delegate: SearchBar()))!;
-                      //print('$newLocation, ${SearchBar.existInSearchList}');
+                      print('$newLocation, ${SearchBar.existInSearchList}');
                       if (newLocation.isNotEmpty) {
-                        if (SearchBar.existInSearchList) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  Loading(location: newLocation),
-                            ),
-                          );
-                        } else {
+                        if(SearchBar.existInSearchList){
+                          replacePage(newLocation);
+                        }else{
                           tryUnknownLocation(newLocation);
                         }
+
+                        // if (isLastScreen) {
+                        //   if (SearchBar.existInSearchList) {
+                        //     pushPage(newLocation);
+                        //   } else {
+                        //     tryUnknownLocation(newLocation);
+                        //   }
+                        // }/// if the current screen is not last screen yet then
+                        // /// keep replacing pages for each new location
+                        // /// and turn isLastScreen = false
+                        // else {
+                        //   if (SearchBar.existInSearchList) {
+                        //     setState(() {
+                        //       isLastScreen = false ;
+                        //     });
+                        //     replacePage(newLocation);
+                        //   } else {
+                        //     tryUnknownLocation(newLocation);
+                        //   }
+                        // }
                       }
                     },
                     icon: Icon(
@@ -83,8 +107,10 @@ class HomePageState extends State<HomePage> {
                     )),
               ],
             ),
+
+
             Container(
-              //color: Colors.blueGrey,
+              color: Colors.blueGrey,
               ///1st container that holds upper part
               padding: EdgeInsets.only(
                 left: 12.0,
@@ -92,28 +118,110 @@ class HomePageState extends State<HomePage> {
                 right: 12.0,
                 bottom: 12.0,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  weatherWidget(screenHeight, screenWidth),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    //mainAxisAlignment: MainAxisAlignment.end,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      tempWidget(screenHeight, screenWidth),
+                      weatherWidget(screenHeight, screenWidth),
                       SizedBox(
-                        height: 20,
+                        width: 20,
                       ),
-                      cloudinessWidget(screenHeight, screenWidth),
+                      Column(
+                        //mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          tempWidget(screenHeight, screenWidth),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          cloudinessWidget(screenHeight, screenWidth),
+                        ],
+                      ),
                     ],
+                  ),
+                  Container(
+                    width: screenWidth*.9,
+                    margin: EdgeInsets.only(top: 12.0),
+                    padding: EdgeInsets.only( bottom: 8,top: 8.0),
+                    decoration: BoxDecoration(
+                      //color: Colors.orange,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Column(
+                      children: [
+                        Text('Air Pollution', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                        Table(
+                          children: [
+                            TableRow(
+                              children: [
+                                makeTitle('Carbon Monoxide(CO)'),
+                                //Text('Carbon Monoxide(CO)'),
+                                Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
+                              ]
+                            ),
+                            TableRow(
+                                children: [
+                                  makeTitle('Nitric Oxide (NO)'),
+                                  //Text('Nitric Oxide (NO)'),
+                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
+                                ]
+                            ),
+                            TableRow(
+                                children: [
+                                  makeTitle('Nitrogen Dioxide (NO2)'),
+                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
+                                ]
+                            ),
+                            TableRow(
+                                children: [
+                                  makeTitle('Ozone (O3)'),
+                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
+                                ]
+                            ),
+                            TableRow(
+                                children: [
+                                  makeTitle('Sulfur Dioxide (SO2)'),
+                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
+                                ]
+                            ),
+                            TableRow(
+                                children: [
+                                  makeTitle('Ammonia (NH3)'),
+                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
+                                ]
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           ],
         ),
+
+      ),
+    );
+  }
+
+
+  void replacePage(String newLocation){
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            Loading(location: newLocation),
+      ),
+    );
+  }
+  void pushPage(String newLocation){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            Loading(location: newLocation),
       ),
     );
   }

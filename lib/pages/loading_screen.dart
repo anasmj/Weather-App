@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app/services/weather_details.dart';
 
-
 class Loading extends StatefulWidget{
   final String location;
   Loading({required this.location});
@@ -35,13 +34,13 @@ class LoadingState extends State<Loading>{
       }
       else {
         setState(() {
-          displayText = 'Something went wrong..\nPlease go back and try again';
+          displayText = 'Location is not found\nPlease go back and try again';
         });
       }
       readyToDisplayData = true;
     }catch(e){
        setState(() {
-         displayText = 'Something went wrong..\nPlease go back and try again';
+         displayText = 'Location is not found\nPlease go back and try again';
        });
     }
   }
@@ -63,14 +62,20 @@ class LoadingState extends State<Loading>{
         centerTitle: true,
         leading: IconButton(
           onPressed: (){
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    Loading(location: 'Bangladesh',),
+              ),
+            );
           },
             icon: Icon(Icons.arrow_back)
         ),
       ),
         backgroundColor: Theme.of(context).backgroundColor,
         body:Center(
-          child: Text(displayText),
+          child: Text('Searching for $location'),
         ),
     );
   }
