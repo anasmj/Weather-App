@@ -30,7 +30,16 @@ class LoadingState extends State<Loading>{
           'cloud': currentWeatherDetails.cloud,
           'humidity': currentWeatherDetails.humidity,
           'pressure': currentWeatherDetails.pressure,
+
+          'CO' : currentWeatherDetails.CO,
+          'NO' : currentWeatherDetails.NO,
+          'NO2' : currentWeatherDetails.NO2,
+          'O3' : currentWeatherDetails.O3,
+          'SO2' : currentWeatherDetails.SO2,
+          'NH3' : currentWeatherDetails.NH3,
         });
+        print(currentWeatherDetails.NH3);
+
       }
       else {
         setState(() {
@@ -75,7 +84,7 @@ class LoadingState extends State<Loading>{
       ),
         backgroundColor: Theme.of(context).backgroundColor,
         body:Center(
-          child: Text('Searching for $location'),
+          child: Text(displayText),
         ),
     );
   }

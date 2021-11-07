@@ -10,11 +10,10 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   Map data = {};
 
   double minLeftPadding = 20;
-  double minTopPadding = 38;
+  double minTopPadding = 30;
   double titleFontSize = 18.0;
   double infoFontSize = 30.0;
   String _location = '-';
@@ -25,19 +24,28 @@ class HomePageState extends State<HomePage> {
   String _cloudStatus = '-';
   String _humidity = '-';
   String _pressure = '-';
+  String _CO = '-', _NO = '-', _NO2 = '-', _O3 = '-', _SO2 = '-', _NH3 = '-';
 
   Widget build(BuildContext context) {
 
-
-    data = data.isEmpty ? ModalRoute.of(context)!.settings.arguments as Map : data;
-    _location    = data['apiGivenLocation'];
+    data =
+        data.isEmpty ? ModalRoute.of(context)!.settings.arguments as Map : data;
+    _location = data['apiGivenLocation'];
     _weatherMain = data['weatherMain'] == 'Clouds' ? 'Cloudy' : 'Cloudy';
+
     /// convert m/s to km/h
-    _windSpeed   = (double.parse(data['windSpeed']) * 3.6).toStringAsFixed(2);
-    _temp        = ((double.parse(data['temp']) - 273)).toStringAsFixed(1);
+    _windSpeed = (double.parse(data['windSpeed']) * 3.6).toStringAsFixed(2);
+    _temp = ((double.parse(data['temp']) - 273)).toStringAsFixed(1);
     _cloudStatus = data['cloud'];
-    _humidity    = data['humidity'];
-    _pressure    = data['pressure'];
+    _humidity = data['humidity'];
+    _pressure = data['pressure'];
+
+    _CO = data['CO'];
+    _NO = data['NO'];
+    _NO2 = data['NO2'];
+    _O3 = data['O3'];
+    _SO2 = data['SO2'];
+    _NH3 = data['NH3'];
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -45,14 +53,13 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       body: Container(
         /// full container
-        color: Colors.grey,
+        color: Theme.of(context).primaryColor,
         //color: Theme.of(context).backgroundColor,
         child: ListView(
           children: [
             SizedBox(
               height: 3.0,
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -72,33 +79,12 @@ class HomePageState extends State<HomePage> {
                     onPressed: () async {
                       final String newLocation = (await showSearch(
                           context: context, delegate: SearchBar()))!;
-                      print('$newLocation, ${SearchBar.existInSearchList}');
                       if (newLocation.isNotEmpty) {
-                        if(SearchBar.existInSearchList){
+                        if (SearchBar.existInSearchList) {
                           replacePage(newLocation);
-                        }else{
+                        } else {
                           tryUnknownLocation(newLocation);
                         }
-
-                        // if (isLastScreen) {
-                        //   if (SearchBar.existInSearchList) {
-                        //     pushPage(newLocation);
-                        //   } else {
-                        //     tryUnknownLocation(newLocation);
-                        //   }
-                        // }/// if the current screen is not last screen yet then
-                        // /// keep replacing pages for each new location
-                        // /// and turn isLastScreen = false
-                        // else {
-                        //   if (SearchBar.existInSearchList) {
-                        //     setState(() {
-                        //       isLastScreen = false ;
-                        //     });
-                        //     replacePage(newLocation);
-                        //   } else {
-                        //     tryUnknownLocation(newLocation);
-                        //   }
-                        // }
                       }
                     },
                     icon: Icon(
@@ -107,10 +93,7 @@ class HomePageState extends State<HomePage> {
                     )),
               ],
             ),
-
-
             Container(
-              color: Colors.blueGrey,
               ///1st container that holds upper part
               padding: EdgeInsets.only(
                 left: 12.0,
@@ -141,56 +124,94 @@ class HomePageState extends State<HomePage> {
                     ],
                   ),
                   Container(
-                    width: screenWidth*.9,
+                    width: screenWidth * 1,
                     margin: EdgeInsets.only(top: 12.0),
-                    padding: EdgeInsets.only( bottom: 8,top: 8.0),
+                    padding: EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      //color: Colors.orange,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                        gradient: LinearGradient(
+                            colors: [Theme.of(context).primaryColorDark, Colors.blue],),
+                      //color: Theme.of(context).primaryColorDark,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Column(
                       children: [
-                        Text('Air Pollution', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            'Air Pollution',
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                         Table(
                           children: [
-                            TableRow(
-                              children: [
-                                makeTitle('Carbon Monoxide(CO)'),
-                                //Text('Carbon Monoxide(CO)'),
-                                Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
-                              ]
-                            ),
-                            TableRow(
-                                children: [
-                                  makeTitle('Nitric Oxide (NO)'),
-                                  //Text('Nitric Oxide (NO)'),
-                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
-                                ]
-                            ),
-                            TableRow(
-                                children: [
-                                  makeTitle('Nitrogen Dioxide (NO2)'),
-                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
-                                ]
-                            ),
-                            TableRow(
-                                children: [
-                                  makeTitle('Ozone (O3)'),
-                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
-                                ]
-                            ),
-                            TableRow(
-                                children: [
-                                  makeTitle('Sulfur Dioxide (SO2)'),
-                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
-                                ]
-                            ),
-                            TableRow(
-                                children: [
-                                  makeTitle('Ammonia (NH3)'),
-                                  Center(child: Text('201.13', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),)),
-                                ]
-                            ),
+                            TableRow(children: [
+                              makeTitle('Carbon Monoxide(CO)'),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Text(
+                                  _CO,
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ]),
+                            TableRow(children: [
+                              makeTitle('Nitric Oxide (NO)'),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    _NO,
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ]),
+                            TableRow(children: [
+                              makeTitle('Nitrogen Dioxide (NO2)'),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    _NO2,
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ]),
+                            TableRow(children: [
+                              makeTitle('Ozone (O3)'),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    _O3,
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ]),
+                            TableRow(children: [
+                              makeTitle('Sulfur Dioxide (SO2)'),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    _SO2,
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ]),
+                            TableRow(children: [
+                              makeTitle('Ammonia (NH3)'),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    _NH3,
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ]),
                           ],
                         ),
                       ],
@@ -201,40 +222,36 @@ class HomePageState extends State<HomePage> {
             ),
           ],
         ),
-
       ),
     );
   }
 
-
-  void replacePage(String newLocation){
+  void replacePage(String newLocation) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            Loading(location: newLocation),
+        builder: (context) => Loading(location: newLocation),
       ),
     );
   }
-  void pushPage(String newLocation){
+
+  void pushPage(String newLocation) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            Loading(location: newLocation),
+        builder: (context) => Loading(location: newLocation),
       ),
     );
   }
 
   void tryUnknownLocation(String newLocation) {
     String s = newLocation.toLowerCase();
-    s = s[0].toUpperCase()+s.substring(1);
+    s = s[0].toUpperCase() + s.substring(1);
     print(s);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            Loading(location: s),
+        builder: (context) => Loading(location: s),
       ),
     );
   }
@@ -243,11 +260,21 @@ class HomePageState extends State<HomePage> {
     double screenHeight,
     double screenWidth,
   ) {
+    DateTime dateToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day) ;
+    String dateTodayString = dateToday.toString();
+    dateTodayString = dateTodayString.substring(0,10);
+    print(dateTodayString);
+
     double titleFontSize = 18.0;
     return Container(
       padding: EdgeInsets.only(left: minLeftPadding, top: minTopPadding),
       decoration: BoxDecoration(
-        color: Colors.lightBlue[600],
+        //color: Theme.of(context).primaryColorDark,
+          gradient: LinearGradient(
+              colors: [Theme.of(context).primaryColorDark, Colors.blue],
+            begin: Alignment(-1.0, -2.0),
+            end: Alignment(1.0, 2.0),
+          ),
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       //width: 180,
@@ -261,7 +288,7 @@ class HomePageState extends State<HomePage> {
             ///current time
             children: [
               Text(
-                'Today, 12 Jan ',
+                'Today, $dateTodayString',
                 style: TextStyle(
                   fontSize: titleFontSize,
                 ),
@@ -308,8 +335,10 @@ class HomePageState extends State<HomePage> {
     return Container(
       padding: EdgeInsets.only(left: minLeftPadding, top: minTopPadding),
       decoration: BoxDecoration(
-        color: Colors.deepOrangeAccent,
+
+        //color: Colors.deepOrangeAccent,
         borderRadius: BorderRadius.all(Radius.circular(20)),
+          gradient: 25.0 > double.parse(_temp) ? LinearGradient(colors: [Colors.lightBlue, Colors.white60])  : LinearGradient(colors: [Colors.red, Colors.orange])
       ),
       height: screenHeight * .23,
       width: screenWidth * .36,
@@ -348,7 +377,7 @@ class HomePageState extends State<HomePage> {
     return Container(
       padding: EdgeInsets.only(left: minLeftPadding, top: minTopPadding),
       decoration: BoxDecoration(
-        color: Colors.lightBlue[600],
+        color: Theme.of(context).primaryColorDark,
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       width: screenWidth * .36,
@@ -386,7 +415,7 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget makeTitle(String text) {
-    double titleFontSize = 18.0;
+    double titleFontSize = 16.0;
     return Text(
       text,
       style: TextStyle(

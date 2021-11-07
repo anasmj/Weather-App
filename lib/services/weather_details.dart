@@ -17,6 +17,9 @@ class WeatherDetails {
   String windSpeed = '-';
   String cloud = '-';
   String name = '-';
+
+  String NO = '-', NO2 = '-',O3= '-',SO2 = '-',NH3 = '-';
+  var CO;
   String _apiKey = '8c9b30bf9341117c2a9a15c7546b2be0';
 
   WeatherDetails({required this.givenLocation});
@@ -27,6 +30,9 @@ class WeatherDetails {
     var response = await http.get(Uri.parse(
         'http://api.openweathermap.org/data/2.5/weather?q=$givenLocation&appid=$_apiKey'));
     map = jsonDecode(response.body);
+
+
+
 
 
     apiGivenLocation = map['name'];
@@ -42,6 +48,17 @@ class WeatherDetails {
     windSpeed = map['wind']['speed'].toString(); //m/s
     cloud = map['clouds']['all'].toString(); //%
 
+    var airQualityResponse = await http.get(Uri.parse(
+        'http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=$lat&lon=$lon&appid=$_apiKey'));
+    Map airQualityMap = jsonDecode(airQualityResponse.body);
+
+    CO = airQualityMap['list'][0]['components']['co'].toString();
+    NO = airQualityMap['list'][0]['components']['no'].toString();
+    NO2= airQualityMap['list'][0]['components']['no2'].toString();
+    O3 = airQualityMap['list'][0]['components']['o3'].toString();
+    SO2= airQualityMap['list'][0]['components']['so2'].toString();
+    NH3= airQualityMap['list'][0]['components']['nh3'].toString();
+    print(NH3);
     if(map['name']== this.givenLocation){
       dataFetched = true;
     }

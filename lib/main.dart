@@ -9,6 +9,7 @@ void main() {
 class WeatherApp extends StatelessWidget{
   Widget build (BuildContext context){
     return MaterialApp(
+      title : 'Weather App',
       theme: ThemeData(
         primaryColor: Colors.blue,
          //brightness: Brightness.dark,
@@ -18,7 +19,7 @@ class WeatherApp extends StatelessWidget{
            // bodyText1: TextStyle(color: Colors.white),
          ),
       ),
-      //initialRoute: '/loading',
+      initialRoute: '/',
       debugShowCheckedModeBanner: false ,
       routes: {
         '/': (context) => Loading(location: 'Bangladesh',),
