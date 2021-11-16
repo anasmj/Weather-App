@@ -1,10 +1,13 @@
-# app
+# Weather App
 
-A new Flutter project.
+Shows current weather and pollutions in particular country or city
 
-## Getting Started
+![Screenshot_2021-11-06-19-58-46-673_com example app](https://user-images.githubusercontent.com/48752942/140612384-43389d11-116c-4c50-bcc5-0d248244569b.jpg)
 
-This project is a starting point for a Flutter application.
+## About
+The application is using openweathermap api to fetch data of certain location. User can search for any country they want. If it is available in api, all information will be shown in organized way. 
+
+<!--This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
@@ -13,4 +16,4 @@ A few resources to get you started if this is your first Flutter project:
 
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+samples, guidance on mobile development, and a full API reference. -->
