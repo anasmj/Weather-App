@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:app/pages/widgets/search_bar.dart';
 import 'package:app/pages/loading_screen.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() {
@@ -27,6 +28,7 @@ class HomePageState extends State<HomePage> {
   String _CO = '-', _NO = '-', _NO2 = '-', _O3 = '-', _SO2 = '-', _NH3 = '-';
 
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
 
     data =
         data.isEmpty ? ModalRoute.of(context)!.settings.arguments as Map : data;
