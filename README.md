@@ -1,6 +1,6 @@
 # Weather App
 
-Shows current weather and pollutions in particular country or city
+Shows real time weather of city or a country
 
 ![Screenshot_2021-11-06-19-58-46-673_com example app](https://user-images.githubusercontent.com/48752942/140612384-43389d11-116c-4c50-bcc5-0d248244569b.jpg)
 
